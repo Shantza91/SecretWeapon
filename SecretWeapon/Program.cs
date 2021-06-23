@@ -3,12 +3,15 @@ using System;
 namespace SecretWeapon
 {
     //store scores in a class with player names
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
             Console.WriteLine("SECRET WEAPON");
+            Console.WriteLine("ENTER YOUR NAME");
+            string name = Console.ReadLine();
             int difficulty = 0;
+            Score scoreCount = new Score();
             while (difficulty < 4)
             {
                 Console.WriteLine("ENTER DIFFICULTY");
@@ -35,7 +38,9 @@ namespace SecretWeapon
                 {
                     SuccessfulyDestroyed(loop);
                     score += 10;
-                    Console.WriteLine($"Your score is: {score}");
+                    Console.WriteLine($"Your score is: {score}"); 
+                    scoreCount.UpdateScore(name, score);
+                    scoreCount.DisplayScore();
                     Console.Read();
                     break;
                 }
@@ -43,6 +48,8 @@ namespace SecretWeapon
                 {
                     Console.WriteLine("Close");
                     score += 1;
+                    scoreCount.UpdateScore(name, score);
+                    scoreCount.DisplayScore();
                 }
                 else
                 {

@@ -13,8 +13,8 @@ namespace SecretWeapon
         {
         }
 
-        string PlayerName;
-        int PlayerScore = 0;
+        string PlayerName { get; set; }
+        int PlayerScore { get; set; }
 
         public void UpdateScore(string name, int score)
         {
