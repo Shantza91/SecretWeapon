@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace SecretWeapon
 {
-    public class Score
+    public class Player
     {
 
-        public Score()
+        public Player()
         {
         }
 
-        string PlayerName { get; set; }
-        int PlayerScore { get; set; }
+        public string PlayerName { get; set; }
+        public int PlayerScore { get; set; }
 
-        public void UpdateScore(string name, int score)
+        public void UpdateScoreAndName(string name, int score)
         {
             PlayerName = name;
-            PlayerScore += score;
+            PlayerScore = score;
         }
 
         public void DisplayScore()
