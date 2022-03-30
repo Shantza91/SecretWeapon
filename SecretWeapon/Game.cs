@@ -8,10 +8,8 @@ namespace SecretWeapon
 {
     internal class Game
     {
-
         public int x;
         public int y;
-
 
         public Game(int difficulty)
         {

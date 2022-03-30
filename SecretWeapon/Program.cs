@@ -4,8 +4,8 @@ using System.Collections.Generic;
 namespace SecretWeapon
 {
     // Take a look into Domain Driven Design!
-    // TO DO: Change the game to be able to play with as many as specified!
-    // TO DO: Lookup serialization and safe scores for every player to display a high score table.
+    // TO DO: Change the game to be able to play with as many players as specified!
+    // TO DO: Lookup serialization and save scores for every player to display a high score table.
     public class Program
     {
         static void Main(string[] args)
