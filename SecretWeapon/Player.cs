@@ -16,7 +16,7 @@ namespace SecretWeapon
         public string PlayerName { get; set; }
         public int PlayerScore { get; set; }
 
-        public void UpdateScoreAndName(string name, int score)
+        public void UpdateNameAndScore(string name, int score)
         {
             PlayerName = name;
             PlayerScore = score;
@@ -24,7 +24,26 @@ namespace SecretWeapon
 
         public void DisplayScore()
         {
-            Console.WriteLine($"{PlayerName}, your score is: {PlayerScore}");
+            Console.WriteLine($"{PlayerName}, your score is: {PlayerScore}.\n");
+        }
+
+        public List<Player> AddPlayers()
+        {
+            List<Player> playerList = new List<Player>();
+            
+            Console.WriteLine("Enter number of players. \n");
+            int numberOfPlayers = Convert.ToInt32(Console.ReadLine());
+
+            for(int i = 1; i <= numberOfPlayers; i++)
+            {
+                Player player = new Player();
+                Console.WriteLine($"ENTER {i} PLAYERS NAME \n");
+                string playerName = Console.ReadLine();
+                player.UpdateNameAndScore(playerName, 0);
+                playerList.Add(player);
+            }
+
+            return playerList;
         }
     }
 }

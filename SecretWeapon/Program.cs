@@ -1,36 +1,26 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SecretWeapon
 {
     // Take a look into Domain Driven Design!
-    // TO DO: Change the game to be able to play with as many players as specified!
+    // TO DO: Change the game to be able to play with as many players as specified! - done
     // TO DO: Lookup serialization and save scores for every player to display a high score table.
     public class Program
     {
         static void Main(string[] args)
         {
             bool newRound = true;
+            Player player = new Player();
+            Console.WriteLine("SECRET WEAPON \n");
             while (newRound)
             {
+                // Setup and manage Player input.
+                var playerList = player.AddPlayers();
 
-                Player player1 = new Player();
-                Player player2 = new Player();
-                Console.WriteLine("SECRET WEAPON \n");
-                Console.WriteLine("Only 2 players. \n");
-                Console.WriteLine("ENTER FIRST PLAYERS NAME \n");
-                string name = Console.ReadLine();
-                player1.UpdateScoreAndName(name, 0);
-
-                Console.WriteLine("ENTER SECOND PLAYERS NAME\n");
-                name = Console.ReadLine();
-                player2.UpdateScoreAndName(name, 0);
-
+                // Setup difficulty.
                 int difficulty = 0;
-                List<Player> playerList = new List<Player>();
-                playerList.Add(player1);
-                playerList.Add(player2);
-                
                 while (difficulty < 4)
                 {
                     Console.WriteLine("ENTER DIFFICULTY\n");
@@ -41,54 +31,50 @@ namespace SecretWeapon
 
                 int loop = 1;
                 bool victory = false;
-
                 while (loop <= (difficulty + 5))
                 {
-                    ClearKeyPresses();
-
-                    foreach (Player player in playerList)
+                    foreach(var players in playerList)
                     {
-                        Console.WriteLine($"{player.PlayerName} is your turn! \n");
 
                         ClearKeyPresses();
-                        Console.WriteLine("Guesses for X and Y");
+                        Console.WriteLine($"{players.PlayerName} is your turn! \n");
+
+                        ClearKeyPresses();
+                        Console.WriteLine("Guesses for X and Y:\n");
 
                         int x1;
                         x1 = Convert.ToInt32(Console.ReadLine());
-                        Console.WriteLine($"X1 selected = {x1}");
+                        Console.WriteLine($"X1 selected = {x1}.\n");
 
                         int y1;
                         y1 = Convert.ToInt32(Console.ReadLine());
-                        Console.WriteLine($"Y1 selected = {y1}");
+                        Console.WriteLine($"Y1 selected = {y1}.\n");
 
                         var z = game.Fire(x1, y1);
 
                         if (z == 0)
                         {
-                            victory = SuccessfulyDestroyed(loop, player.PlayerName);
-                            player.PlayerScore += 10;
+                            victory = SuccessfulyDestroyed(loop, players.PlayerName);
+                            players.PlayerScore += 10;
+                            Console.Read();
                             break;
-
                         }
                         else if (z <= 3)
                         {
-                            Console.WriteLine("Close\n");
-                            player.PlayerScore += 1;
+                            Console.WriteLine("Close.\n");
+                            players.PlayerScore += 1;
                         }
                         else
                         {
-                            Console.WriteLine("Not even close\n");
+                            Console.WriteLine("Not even close.\n");
                         }
 
-                        player.DisplayScore();
-                    }
-                    if (victory)
-                    {
-                        break;
+                        players.DisplayScore();
+
                     }
                     loop++;
                 }
-                if (player1.PlayerScore < (difficulty + 5) && player2.PlayerScore < (difficulty + 5))
+                if(!victory)
                 {
                     Console.WriteLine("THE ROBOTS HAVE SEEN YOU - AGGGHHHHH....");
                     Console.Read();
@@ -97,7 +83,7 @@ namespace SecretWeapon
                 CalculateWinner(playerList);
                 newRound = PlayNewRound();
             }
-            
+
         }
 
         public static bool SuccessfulyDestroyed(int loop, string playerName)
@@ -116,17 +102,19 @@ namespace SecretWeapon
 
         public static void CalculateWinner(List<Player> playerList)
         {
-            if(playerList[0].PlayerScore > playerList[1].PlayerScore)
+            List<int> scoreList = new List<int>();
+            foreach(Player player in playerList)
             {
-                Console.WriteLine($"{playerList[0].PlayerName} is the WINNER!");
+                scoreList.Add(player.PlayerScore);
             }
-            else if(playerList[0].PlayerScore < playerList[1].PlayerScore)
+
+            foreach (Player player in playerList)
             {
-                Console.WriteLine($"{playerList[1].PlayerName} is the WINNER!");
-            }
-            else
-            {
-                Console.WriteLine("IT'S DRAW");
+                int playerHighestScore = scoreList.Max();
+                if (player.PlayerScore == playerHighestScore)
+                {
+                    Console.WriteLine($"{player.PlayerName} is the WINNER!");
+                }
             }
         }
 
