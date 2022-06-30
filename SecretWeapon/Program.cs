@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace SecretWeapon
 {
     // Take a look into Domain Driven Design!
     // TO DO: Change the game to be able to play with as many players as specified! - done
-    // TO DO: Lookup serialization and save scores for every player to display a high score table.
+    // TO DO: Lookup serialization and save scores for every player to display a high score table. - done
     public class Program
     {
         static void Main(string[] args)
@@ -14,6 +15,8 @@ namespace SecretWeapon
             bool newRound = true;
             Player player = new Player();
             Console.WriteLine("SECRET WEAPON \n");
+            HighScore highScore = new HighScore();
+            highScore.LoadScores();
             while (newRound)
             {
                 // Setup and manage Player input.
@@ -33,8 +36,16 @@ namespace SecretWeapon
                 bool victory = false;
                 while (loop <= (difficulty + 5))
                 {
-                    foreach(var players in playerList)
+                    // Skip statement, remove after debug!
+                    Console.WriteLine("DO YOU WANT TO SKIP?");
+                    if (Console.ReadLine() == "y")
                     {
+                        break;
+                    }
+
+                    foreach (var players in playerList)
+                    {
+                        
 
                         ClearKeyPresses();
                         Console.WriteLine($"{players.PlayerName} is your turn! \n");
@@ -81,9 +92,15 @@ namespace SecretWeapon
                 }
 
                 CalculateWinner(playerList);
+
+                // Saving scores to file.                
+                highScore.SaveScores(playerList);
+
+                // Display top 10 scores if there are at least 10 players that have played.
+                highScore.DisplayTopTenScores();
+
                 newRound = PlayNewRound();
             }
-
         }
 
         public static bool SuccessfulyDestroyed(int loop, string playerName)
