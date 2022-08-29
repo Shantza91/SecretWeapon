@@ -13,15 +13,15 @@ namespace SecretWeapon
         static void Main(string[] args)
         {
             bool newRound = true;
-            Player player = new Player();
+
             Console.WriteLine("SECRET WEAPON \n");
             HighScore highScore = new HighScore();
+
             highScore.LoadScores();
+
             while (newRound)
             {
-                // Setup and manage Player input.
-                var playerList = player.AddPlayers();
-
+                
                 // Setup difficulty.
                 int difficulty = 0;
                 while (difficulty < 4)
@@ -31,6 +31,9 @@ namespace SecretWeapon
                 }
 
                 var game = new Game(difficulty);
+
+                // Setup and manage Player input.
+                var playerList = game.AddPlayers();
 
                 int loop = 1;
                 bool victory = false;
@@ -43,12 +46,10 @@ namespace SecretWeapon
                         break;
                     }
 
-                    foreach (var players in playerList)
+                    foreach (var playerStatus in playerList)
                     {
-                        
-
                         ClearKeyPresses();
-                        Console.WriteLine($"{players.PlayerName} is your turn! \n");
+                        Console.WriteLine($"{playerStatus.PlayerName} is your turn! \n");
 
                         ClearKeyPresses();
                         Console.WriteLine("Guesses for X and Y:\n");
@@ -65,23 +66,23 @@ namespace SecretWeapon
 
                         if (z == 0)
                         {
-                            victory = SuccessfulyDestroyed(loop, players.PlayerName);
-                            players.PlayerScore += 10;
+                            victory = SuccessfulyDestroyed(loop, playerStatus.PlayerName);
+                            playerStatus.Scored(10);
+
                             Console.Read();
                             break;
                         }
                         else if (z <= 3)
                         {
                             Console.WriteLine("Close.\n");
-                            players.PlayerScore += 1;
+                            playerStatus.Scored(1);
                         }
                         else
                         {
                             Console.WriteLine("Not even close.\n");
                         }
 
-                        players.DisplayScore();
-
+                        playerStatus.DisplayScore();
                     }
                     loop++;
                 }

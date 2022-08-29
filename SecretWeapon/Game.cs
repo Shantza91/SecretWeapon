@@ -24,5 +24,24 @@ namespace SecretWeapon
 
             return z;
         }
+
+        public List<Player> AddPlayers()
+        {
+            List<Player> playerList = new List<Player>();
+
+            Console.WriteLine("Enter number of players. \n");
+            int numberOfPlayers = Convert.ToInt32(Console.ReadLine());
+
+            for (int i = 1; i <= numberOfPlayers; i++)
+            {
+                Player player = new Player();
+                Console.WriteLine($"ENTER {i} PLAYERS NAME \n");
+                string playerName = Console.ReadLine();
+                player.UpdateNameAndScore(playerName, 0);
+                playerList.Add(player);
+            }
+
+            return playerList;
+        }
     }
 }
